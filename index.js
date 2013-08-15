@@ -8,4 +8,10 @@
 
 'use strict';
 
-module.exports = require('./lib/nodewebmailer');
+var app = require('express')();
+require('../config')(app);
+require('../routes')(app);
+
+app.listen(app.get('port'));
+
+module.exports = app;
