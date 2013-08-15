@@ -16,9 +16,22 @@ module.exports = function (grunt) {
       },
       all: [
         'Gruntfile.js',
-        'index.js',
-        'test/**/*js'
+        'tools/**/*js',
+        'lib/**/*js',
+        'models/**/*js',
+        'routes/**/*js',
+        'controllers/**/*js',
+        'views/**/*js',
+        'test/**/*js',
+        'index.js'
       ]
+    },
+    mocha: {
+      index: ['test/index.html'],
+      options: {
+        log: true,
+        run: true
+      }
     },
     simplemocha: {
       options: {
@@ -39,7 +52,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-mocha');
 
   grunt.registerTask('default', ['install-hook', 'verify-project']);
-  grunt.registerTask('verify-project', ['jshint', 'simplemocha', 'grunt-mocha']);
+  grunt.registerTask('verify-project', ['jshint', 'simplemocha', 'mocha']);
   grunt.registerTask('test', ['simplemocha', 'grunt-mocha']);
 
   grunt.registerTask('install-hook', function () {
