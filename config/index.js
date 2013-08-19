@@ -13,11 +13,13 @@ var path = require('path');
 var parachute = require('parachute');
 var build = require('../tools/build');
 var buildTests = require('../tools/build-tests');
+var authMiddleware = require('../lib/auth_middleware');
 
 exports = module.exports = function (app) {
   app.set('port', process.env.NODE_PORT || 3000);
   app.use(express.bodyParser());
   app.use(express.cookieParser());
+  app.use(authMiddleware);
 
   app.use('/app', express.static(path.join(__dirname + '/../app')));
   app.use('/views', express.static(path.join(__dirname + '/../views')));
@@ -33,19 +35,17 @@ exports = module.exports = function (app) {
     buildTests().pipe(res);
 
   });
-
-
   app.use(express.favicon());
   app.use(express.logger());
   app.use(app.router);
 
-  app.set('server', 'localhost');
+  app.set('db_server', 'localhost');
   app.set('collection', 'barnstormer');
   app.set('view engine', 'hbs');
   app.set('views', __dirname + '/../views');
 
   app.configure('unittest', function () {
-    app.set('mongodbCollection', 'unittests');
+    app.set('db_server', 'unittests');
   });
 
   app.configure('development', function () {
